@@ -2,12 +2,11 @@ using System.Collections.Generic;
 using UnityEngine;
 using Cinemachine;
 using Assets._Scripts.Interfaces;
-using TMPro;
 using UnityEngine.AI;
 
 namespace Assets._Scripts.Game
 {
-    public class Game : MonoBehaviour, IGameHandler
+    public class Game : MonoBehaviour
     {
         [SerializeField] private NavMeshSurface _navMesh;
         [SerializeField] private LevelView _levelView;
@@ -78,9 +77,9 @@ namespace Assets._Scripts.Game
         {
             InitializeData();
             InitializeSavesHandler();
-            InitializeLevelView();
+            InitializeCountLevel();
             CreateLevel();
-            InitializeNavMesh();
+            BuildNavMesh();
             CreatePlayer();
             InitializeCamera();
             var positionsResource = InitializeSpawnPositionResource();
@@ -99,10 +98,10 @@ namespace Assets._Scripts.Game
             _allSpot.Clear();
         }
 
-        private void InitializeNavMesh()
+        private void BuildNavMesh()
         {
             _navMesh.BuildNavMesh();
-            _navMesh.transform.position = new Vector3(_navMesh.transform.position.x, _navMesh.transform.position.y - 0.01f, _navMesh.transform.position.z); // thi
+            _navMesh.transform.position = new Vector3(_navMesh.transform.position.x, _navMesh.transform.position.y - 0.01f, _navMesh.transform.position.z);
         }
 
         private void CreateLevel()
@@ -110,7 +109,7 @@ namespace Assets._Scripts.Game
             _level = _levelHnadler.CreateLevel(_dataPlayer.Level);
         }
 
-        private void InitializeLevelView()
+        private void InitializeCountLevel()
         {
             _levelView.Initialize(_dataPlayer.Level);
         }
@@ -193,7 +192,7 @@ namespace Assets._Scripts.Game
         {
             _playerContainer = _level.GetComponentInChildren<PlayerContainer>();
 
-            _player = Instantiate(_playerPrefab);        
+            _player = Instantiate(_playerPrefab);  
             _player.transform.SetParent(_playerContainer.transform);
              _player.transform.localPosition = Vector3.zero;
             _player.Initialize(joystickHandler:_joystick, _dataPlayer, _dataResource, _resourceView);

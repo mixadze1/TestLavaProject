@@ -10,8 +10,8 @@ namespace Assets._Scripts.Initialize
         public async Task AllServices() // remaining initialize all services
         {
             List<Task> servicesInitializationTasks = new List<Task>(); 
-            servicesInitializationTasks.Add(Task.Delay(100));
-            servicesInitializationTasks.Add(Task.Delay(250));
+            servicesInitializationTasks.Add(Task.Delay(1));
+            servicesInitializationTasks.Add(Task.Delay(1));
 
             await Task.WhenAll(servicesInitializationTasks);
         }

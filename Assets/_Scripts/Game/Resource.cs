@@ -26,7 +26,6 @@ namespace Assets._Scripts.Game
         {
             _boxCollider.enabled = false;
             this.transform.SetParent(playerHandler.GetTransform());
-            Debug.Log(playerHandler.GetTransform());
             this.transform.rotation = Quaternion.identity;
             this.transform.DOLocalJump(playerHandler.GetPositionForItem().localPosition, _jumpPower, _amountJump, _timeJump).OnComplete(() =>
             {

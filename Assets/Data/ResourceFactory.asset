@@ -21,7 +21,7 @@ MonoBehaviour:
     DelayRecovery: 1.99
     ResourceJumpPower: 3.21
     ResourceTimeMove: 2.24
-    Health: 50
+    Health: 100
     RecoveryHealthPerSecond: 5
     Type: 1
     Material: {fileID: 2100000, guid: 748eadaa7f93ba64cb28bb4e73fec699, type: 2}
@@ -49,7 +49,7 @@ MonoBehaviour:
     DelayRecovery: 0.71
     ResourceJumpPower: 2.26
     ResourceTimeMove: 1.52
-    Health: 50
+    Health: 80
     RecoveryHealthPerSecond: 8
     Type: 2
     Material: {fileID: 2100000, guid: cd8e1b33beadb6144b966f7f45518156, type: 2}

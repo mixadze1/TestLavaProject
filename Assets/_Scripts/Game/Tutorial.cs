@@ -1,6 +1,5 @@
 using Assets._Scripts.Interfaces;
 using UnityEngine;
-using UnityEngine.UI;
 
 namespace Assets._Scripts.Game
 {

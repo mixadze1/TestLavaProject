@@ -45,8 +45,8 @@ public class ResourceDigger : MonoBehaviour, IFixedUpdater
             _fixedTime += Time.fixedDeltaTime;
             if (_fixedTime >= _timeDamage)
             {
-                _isTouch = true;
                 Debug.Log("Digger");
+                _isTouch = true;
                 Digger();
                 _fixedTime = 0;
             }           
@@ -54,7 +54,7 @@ public class ResourceDigger : MonoBehaviour, IFixedUpdater
         if(!CheckResourceInRange() || _resource.GetHealth() <= 0)
         {
             _resource?.RecoveryEnable();
-            _resource = null;
+            _resource = null; 
             _animationHandler.SetMine(false);
         }
     }
@@ -64,15 +64,15 @@ public class ResourceDigger : MonoBehaviour, IFixedUpdater
         var position = transform.position;
         RaycastHit hitCollider;
 
-        Ray rayBackward = new Ray(new Vector3(position.x, position.y, position.z), transform.forward);
-        Debug.DrawRay(new Vector3(position.x, position.y, position.z), transform.forward * _range);
+        var offset = 0.5f;
+        Ray rayBackward = new Ray(new Vector3(position.x, position.y + offset, position.z), transform.forward);
+        Debug.DrawRay(new Vector3(position.x, position.y + offset, position.z), transform.forward * _range);
 
         if (Physics.Raycast(rayBackward, out hitCollider, _range, _layerMask))
         {
             _resource = hitCollider.transform.GetComponent<ResourceSource>();
             _timeDamage = _resource.GetTimeDamage();
             return true;
-
         }
         return false;
     }

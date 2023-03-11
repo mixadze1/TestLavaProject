@@ -8,7 +8,6 @@ namespace Assets._Scripts.Game
 {
     public class ResourceSource : MonoBehaviour, IFixedUpdater
     {
-   
         [SerializeField] private Image[] _imageSlider;
         [SerializeField] private Slider _slider;
         [SerializeField] private Canvas _canvas;

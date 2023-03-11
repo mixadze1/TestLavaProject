@@ -52,9 +52,7 @@ namespace Assets._Scripts.Game
         public void GetSaves(DataPlayer data, DataResource dataResource)
         {
             _dataResource = dataResource;
-            _resources = new Dictionary<ResourceType, int>();
-            Debug.Log(_resources);
-           
+            _resources = new Dictionary<ResourceType, int>();         
             GetSafeResource();
             UpdateView(ResourceType.Trees, true);
             UpdateView(ResourceType.Metal, true);
@@ -75,7 +73,6 @@ namespace Assets._Scripts.Game
         {
             resource.BoxColliderEnabled(false);
             _isTouchResource = true;
-            Debug.Log(_playerHandler);
             resource.GiveItem(_playerHandler);
             int count = _resources[resource.Type];
             count++;
@@ -138,8 +135,8 @@ namespace Assets._Scripts.Game
             {
                 if (_tweener != null)
                     _tweener.Kill();
-                   
-                _tweener = _resourcesView[type].transform.DOScale(1.5f, 0.15f).OnComplete(() => _resourcesView[type].transform.DOScale(1, 0.15f));
+                   float scaleText = 1.5f, timeScale = 0.15f;
+                _tweener = _resourcesView[type].transform.DOScale(scaleText, timeScale).OnComplete(() => _resourcesView[type].transform.DOScale(1, timeScale));
             }
          
         }

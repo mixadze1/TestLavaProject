@@ -7,10 +7,11 @@ namespace Assets._Scripts.Game
     public class PlayerMovement : MonoBehaviour, IFixedUpdater, IMovementHandler
     {
         [SerializeField, Range(1, 10f)] private float _speed;
+
         private NavMeshAgent _agent;
+
         private IJoystickHandler _joystickHandler;
         private IPlayerAnimationHandler _animationHandler;
-
 
         public void Initialize(IJoystickHandler joystickHandler, IPlayerAnimationHandler animationHandler)
         {

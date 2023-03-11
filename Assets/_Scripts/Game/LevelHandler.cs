@@ -14,6 +14,7 @@ public class LevelHandler : MonoBehaviour
         }
         catch
         {
+            Debug.Log("LEVELS ARE OVER!!! Enabled first level!");
             return Instantiate(_levels[0]);
         }
        
