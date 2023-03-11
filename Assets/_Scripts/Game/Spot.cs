@@ -7,7 +7,8 @@ namespace Assets._Scripts.Game
 {
     public class Spot : MonoBehaviour, IFixedUpdater
     {
-        [SerializeField] private ParticleSystem _particle;
+        [SerializeField] private Transform _positionForParticle;
+     
         [SerializeField] private Transform _positionForGet;
         [SerializeField] private Transform _positionForCreate;
 
@@ -16,6 +17,8 @@ namespace Assets._Scripts.Game
         [SerializeField] private List<MeshRenderer> _meshColorFromResource;
 
         [SerializeField] private List<MeshRenderer> _meshColorToResource;
+
+        private ParticleSystem _particle;
 
         private float _rangeNeedResource;
 
@@ -44,6 +47,7 @@ namespace Assets._Scripts.Game
         {
             this.transform.position = new Vector3(position.x, 1.5f, position.z);
             this.transform.rotation = Quaternion.Euler(0, -90, 0);
+            InitializeParticle(config);
             InitializeTimeDelay(config);
             InitializeAmountCreateAndNeedResources(config);
             InitializeRangeNeedResources(config);
@@ -82,6 +86,11 @@ namespace Assets._Scripts.Game
             UpdateView();
             PositionToNeedResource(resource);
             return true;
+        }
+
+        private void InitializeParticle(SpotFactory.SpotConfig config)
+        {
+            _particle = Instantiate(config.Particle, _positionForParticle.position, _positionForParticle.rotation);
         }
 
         private void InitializeRangeNeedResources(SpotFactory.SpotConfig config)
@@ -172,7 +181,7 @@ namespace Assets._Scripts.Game
                     {
                         UpdateView();
                         _spotView.ZeroSlider();
-                        item.GetBoxCollider().enabled = true;
+                        item.BoxColliderEnabled(true);
                     });
             }
         }

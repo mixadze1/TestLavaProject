@@ -143,6 +143,7 @@ Transform:
   - {fileID: 6574439955280181904}
   - {fileID: 3415882567816019043}
   - {fileID: 1350493486023411297}
+  - {fileID: 9135850110719105513}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -158,7 +159,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cdbd5b0880ad8dd4c86b81f89bc2beac, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _particle: {fileID: 8768154394446236973}
+  _positionForParticle: {fileID: 9135850110719105513}
   _positionForGet: {fileID: 3415882567816019043}
   _positionForCreate: {fileID: 1350493486023411297}
   _prefabItem: {fileID: -5922024081315653749, guid: 24c941c47d2f5634f9bb42c4d609c41b, type: 3}
@@ -193,10 +194,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1df15b0959a50e04fa6f3ab32718f9ae, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _amountSpotGiveText: {fileID: 4636743067077759664}
-  _amountSpotGetText: {fileID: 6689386305195547746}
+  _textCubeLeft: {fileID: 4636743067077759664}
+  _textCubeRight: {fileID: 6689386305195547746}
   _image: {fileID: 1601281055823047327}
-  _amountStillGetText: {fileID: 1601281055238162992}
+  _textFloor: {fileID: 1601281055238162992}
   _slider: {fileID: 1601281055225960118}
   _sliderFill: {fileID: 1601281055378656820}
 --- !u!1 &1601281055225960120
@@ -302,7 +303,7 @@ GameObject:
   - component: {fileID: 1601281055238163407}
   - component: {fileID: 1601281055238162992}
   m_Layer: 11
-  m_Name: Text (TMP)
+  m_Name: FloorText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1323,7 +1324,7 @@ GameObject:
   - component: {fileID: 1920473751807223792}
   - component: {fileID: 4636743067077759664}
   m_Layer: 11
-  m_Name: AmountFromoText (1)
+  m_Name: TextLeftCube
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1709,6 +1710,37 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!1 &6430358009075913999
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 9135850110719105513}
+  m_Layer: 11
+  m_Name: PositionForParticle
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &9135850110719105513
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6430358009075913999}
+  m_LocalRotation: {x: -0.69744164, y: 0.11651227, z: 0.69744176, w: 0.11651245}
+  m_LocalPosition: {x: -0.54399997, y: 1.287, z: 0.089999676}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1601281054429511372}
+  m_RootOrder: 7
+  m_LocalEulerAnglesHint: {x: -161.032, y: 90, z: 0}
 --- !u!1 &7944970976903569117
 GameObject:
   m_ObjectHideFlags: 0
@@ -1721,7 +1753,7 @@ GameObject:
   - component: {fileID: 1122121170223215259}
   - component: {fileID: 6689386305195547746}
   m_Layer: 11
-  m_Name: AmountTooText (2)
+  m_Name: textRightCube
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1961,11 +1993,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 58b4f35335c59de4d8a92239a48b274f, type: 3}
---- !u!198 &8768154394446236973 stripped
-ParticleSystem:
-  m_CorrespondingSourceObject: {fileID: 19873680, guid: 58b4f35335c59de4d8a92239a48b274f, type: 3}
-  m_PrefabInstance: {fileID: 8768154394459943613}
-  m_PrefabAsset: {fileID: 0}
 --- !u!4 &8768154394460320663 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 442666, guid: 58b4f35335c59de4d8a92239a48b274f, type: 3}

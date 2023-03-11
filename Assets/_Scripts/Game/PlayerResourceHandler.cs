@@ -73,7 +73,7 @@ namespace Assets._Scripts.Game
 
         public void AddResource(Resource resource)
         {
-            resource.GetBoxCollider().enabled = false;
+            resource.BoxColliderEnabled(false);
             _isTouchResource = true;
             Debug.Log(_playerHandler);
             resource.GiveItem(_playerHandler);

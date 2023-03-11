@@ -14,8 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _treesToMetal:
     PrefabSpot: {fileID: 8963336790547801115, guid: e80e9d687f7cb4b4dbda96d58e0eff41, type: 3}
-    TimeCreateResource: 6.2
-    TimeDelayGiveResource: 0.45
+    TimeCreateResource: 2.91
+    TimeDelayGiveResource: 0.25
     ResourceNeed: 5
     ResourceCreate: 5
     RandomRangeNeedResource: 0.072
@@ -24,6 +24,7 @@ MonoBehaviour:
     TypeResourceCreate: 2
     MaterialFrom: {fileID: 2100000, guid: bd414eb03ec5aba4da64e513d5609530, type: 2}
     MaterialTo: {fileID: 2100000, guid: cd8e1b33beadb6144b966f7f45518156, type: 2}
+    Particle: {fileID: 19873680, guid: 58b4f35335c59de4d8a92239a48b274f, type: 3}
   _metalToCrystal:
     PrefabSpot: {fileID: 8963336790547801115, guid: e80e9d687f7cb4b4dbda96d58e0eff41, type: 3}
     TimeCreateResource: 5.76
@@ -36,10 +37,11 @@ MonoBehaviour:
     TypeResourceCreate: 1
     MaterialFrom: {fileID: 2100000, guid: cd8e1b33beadb6144b966f7f45518156, type: 2}
     MaterialTo: {fileID: 2100000, guid: 748eadaa7f93ba64cb28bb4e73fec699, type: 2}
+    Particle: {fileID: 3753778283769294811, guid: 2ef436b6c6313494daf190cd68ebf636, type: 3}
   _crystalToTrees:
     PrefabSpot: {fileID: 8963336790547801115, guid: e80e9d687f7cb4b4dbda96d58e0eff41, type: 3}
-    TimeCreateResource: 3.31
-    TimeDelayGiveResource: 0.45
+    TimeCreateResource: 9.15
+    TimeDelayGiveResource: 0.8
     ResourceNeed: 6
     ResourceCreate: 7
     RandomRangeNeedResource: 0.072
@@ -48,3 +50,4 @@ MonoBehaviour:
     TypeResourceCreate: 0
     MaterialFrom: {fileID: 2100000, guid: 748eadaa7f93ba64cb28bb4e73fec699, type: 2}
     MaterialTo: {fileID: 2100000, guid: bd414eb03ec5aba4da64e513d5609530, type: 2}
+    Particle: {fileID: 3895393583296944149, guid: c77d4bfad4580084bacc1dd000a3de9e, type: 3}

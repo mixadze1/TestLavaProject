@@ -3,12 +3,12 @@ using UnityEngine;
 
 namespace Assets._Scripts.Game
 {
-    public class SafeData
+    public class SaveData
     {
         public string FileResource = "ResourceData.json";
         public string FilePlayer = "PlayerData.json";
 
-        public void SafeGame<T>(T data, string fileName)
+        public void SaveGame<T>(T data, string fileName)
         {
 #if UNITY_ANDROID || UNITY_EDITOR
             string path = Path.Combine(Application.persistentDataPath, fileName);

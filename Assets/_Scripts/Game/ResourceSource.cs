@@ -188,7 +188,7 @@ namespace Assets._Scripts.Game
         {
             int amountJump = 1;
             var direction = new Vector3(this.transform.position.x + Random.Range(-_rangeResource, _rangeResource), this.transform.position.y, this.transform.position.z + Random.Range(-_rangeResource, _rangeResource));
-            item.transform.DOJump(new Vector3(direction.x, 1.15f, direction.z), _jumpPower, amountJump, _timeMoveResource).OnComplete(() => item.GetBoxCollider().enabled = true);
+            item.transform.DOJump(new Vector3(direction.x, 1.15f, direction.z), _jumpPower, amountJump, _timeMoveResource).OnComplete(() => item.BoxColliderEnabled(true));
         }
     }
 }

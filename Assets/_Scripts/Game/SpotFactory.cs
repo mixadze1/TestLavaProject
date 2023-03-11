@@ -31,6 +31,7 @@ namespace Assets._Scripts.Game
 
             public Material MaterialFrom;
             public Material MaterialTo;
+            public ParticleSystem Particle;
         }
      
         [SerializeField] private SpotConfig _treesToMetal, _metalToCrystal, _crystalToTrees;

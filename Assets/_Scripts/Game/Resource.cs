@@ -15,7 +15,7 @@ namespace Assets._Scripts.Game
         private float _timeRotate = 1.7f;
 
         private int _amountJump = 1;
-        public ResourceType Type {get; private set;}
+        public ResourceType Type { get; private set; }
 
         public void Initialize(ResourceType type)
         {
@@ -37,7 +37,11 @@ namespace Assets._Scripts.Game
 
         public Color GetColor() => _meshRenderer.material.color;
 
-        public BoxCollider GetBoxCollider() => _boxCollider;    
+        public void BoxColliderEnabled(bool value)
+        {
+            _boxCollider.enabled = value;
+        }
+
         public MeshRenderer GetMeshRenderer() => _meshRenderer;
 
         private void InitializeMaterial()

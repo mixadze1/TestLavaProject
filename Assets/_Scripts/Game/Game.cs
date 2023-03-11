@@ -5,7 +5,7 @@ using Assets._Scripts.Interfaces;
 
 namespace Assets._Scripts.Game
 {
-    public class Game : MonoBehaviour, IGameHandler, IGameSavesHandler
+    public class Game : MonoBehaviour, IGameHandler
     {
         [SerializeField] private Tutorial _tutorial;
         [SerializeField] private ResourceContainer _resourceContainer;
@@ -20,11 +20,12 @@ namespace Assets._Scripts.Game
         [SerializeField] private PlayerContainer _playerContainer;
         [SerializeField] private ResourceView _resourceView;
 
+        private SavesHandler _savesHandler;
         private Player _player;
         private DataPlayer _dataPlayer;
         private DataResource _dataResource;
 
-        private SafeData _saveData;
+        private SaveData _saveData;
 
         private List<IUpdater> _updates = new List<IUpdater>();
         private List<IFixedUpdater> _fixedUpdater = new List<IFixedUpdater>();
@@ -34,6 +35,8 @@ namespace Assets._Scripts.Game
         private List<Spot> _allSpot = new List<Spot>();
 
         private bool _isPause;
+
+        public bool SaveGameEveryMinute;
 
         public bool IsEnableTutorial;
 
@@ -65,6 +68,7 @@ namespace Assets._Scripts.Game
         private void StartGame()
         {
             InitializeData();
+            InitializeSavesHandler();
             CreatePlayer();
             InitializeCamera();
             var positionsResource = InitializeSpawnPositionResource();
@@ -73,6 +77,14 @@ namespace Assets._Scripts.Game
             SpawnResource(positionsResource);
             SpawnSpot(positionSpot);
             InitializeTutorial();
+        }
+
+        private void InitializeSavesHandler()
+        {
+            _savesHandler = GetComponent<SavesHandler>();
+            _savesHandler.Initialize(_dataPlayer, _dataResource, _saveData);
+            if(SaveGameEveryMinute)
+                _fixedUpdater.Add(_savesHandler);
         }
 
         private void InitializeTutorial()
@@ -86,7 +98,7 @@ namespace Assets._Scripts.Game
 
         private void InitializeData()
         {           
-            _saveData = new SafeData();
+            _saveData = new SaveData();
 
             _dataPlayer = _saveData.LoadData<DataPlayer>(_saveData.FilePlayer);
             _dataResource = _saveData.LoadData<DataResource>(_saveData.FileResource);
@@ -147,11 +159,7 @@ namespace Assets._Scripts.Game
 
         public void DeleteAllSaves()
         {
-            if(_saveData == null)
-                _saveData = new SafeData();
-
-            _saveData.DeleteFile(_saveData.FilePlayer);
-            _saveData.DeleteFile(_saveData.FileResource);
+            _savesHandler.DeleteSaves();
         }
 
         public void PauseGame()
@@ -169,8 +177,7 @@ namespace Assets._Scripts.Game
 
         public void SaveGame()
         {
-            _saveData.SafeGame(_dataPlayer, _saveData.FilePlayer);
-            _saveData.SafeGame(_dataResource, _saveData.FileResource);
+            _savesHandler.SaveGame();
         }
 
         public void OnApplicationPause()
