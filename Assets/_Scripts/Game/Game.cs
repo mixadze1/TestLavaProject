@@ -2,24 +2,33 @@ using System.Collections.Generic;
 using UnityEngine;
 using Cinemachine;
 using Assets._Scripts.Interfaces;
+using TMPro;
+using UnityEngine.AI;
 
 namespace Assets._Scripts.Game
 {
     public class Game : MonoBehaviour, IGameHandler
     {
-        [SerializeField] private Tutorial _tutorial;
-        [SerializeField] private ResourceContainer _resourceContainer;
-        [SerializeField] private ResourceSourceContainer _resourceSourceContainer;
-        [SerializeField] private PositionSpawnSpot _spawnSpotPosition;
-        [SerializeField] private ResourceSpawnPosition _spawnResourcePositions;
+        [SerializeField] private NavMeshSurface _navMesh;
+        [SerializeField] private LevelView _levelView;
+        [SerializeField] private LevelHandler _levelHnadler;  
         [SerializeField] private ResourceFactory _resourceFactory;
         [SerializeField] private SpotFactory _spotFactory;
         [SerializeField] private Joystick _joystick;
         [SerializeField] private CinemachineVirtualCamera _camera;
-        [SerializeField] private Player _playerPrefab;
-        [SerializeField] private PlayerContainer _playerContainer;
+        [SerializeField] private Player _playerPrefab;  
         [SerializeField] private ResourceView _resourceView;
 
+        private Tutorial _tutorial;
+        private PlayerContainer _playerContainer;
+        private SpotContainer _spotContainer;
+        private ResourceContainer _resourceContainer;
+        private ResourceSourceContainer _resourceSourceContainer;
+
+        private ResourceSpawnPosition _spawnResourcePositions;
+        private PositionSpawnSpot _spawnSpotPosition;
+
+        private Level _level;
         private SavesHandler _savesHandler;
         private Player _player;
         private DataPlayer _dataPlayer;
@@ -43,7 +52,7 @@ namespace Assets._Scripts.Game
         private void Start()
         {
             Application.targetFrameRate = 60;
-            StartGame();
+            StartNewGame();
         }
 
         private void Update()
@@ -65,18 +74,45 @@ namespace Assets._Scripts.Game
             }
         }
 
-        private void StartGame()
+        private void StartNewGame()
         {
             InitializeData();
             InitializeSavesHandler();
+            InitializeLevelView();
+            CreateLevel();
+            InitializeNavMesh();
             CreatePlayer();
             InitializeCamera();
             var positionsResource = InitializeSpawnPositionResource();
             var positionSpot = InitializeSpawnSpotPosition();
-
             SpawnResource(positionsResource);
             SpawnSpot(positionSpot);
             InitializeTutorial();
+        }
+
+        private void RestartGame()
+        {
+            DestroyImmediate(_level.gameObject);
+            _updates.Clear();
+            _fixedUpdater.Clear();
+            _allResource.Clear();
+            _allSpot.Clear();
+        }
+
+        private void InitializeNavMesh()
+        {
+            _navMesh.BuildNavMesh();
+            _navMesh.transform.position = new Vector3(_navMesh.transform.position.x, _navMesh.transform.position.y - 0.01f, _navMesh.transform.position.z); // thi
+        }
+
+        private void CreateLevel()
+        {
+            _level = _levelHnadler.CreateLevel(_dataPlayer.Level);
+        }
+
+        private void InitializeLevelView()
+        {
+            _levelView.Initialize(_dataPlayer.Level);
         }
 
         private void InitializeSavesHandler()
@@ -89,7 +125,8 @@ namespace Assets._Scripts.Game
 
         private void InitializeTutorial()
         {
-            if(IsEnableTutorial && _tutorial != null)
+            _tutorial = _level.GetComponentInChildren<Tutorial>();
+            if(IsEnableTutorial && _tutorial != null && _dataPlayer.Level == 0)
             {
                 _tutorial.Initialize(playerHandler: _player, _dataPlayer);
                 _fixedUpdater.Add(_tutorial);
@@ -97,8 +134,9 @@ namespace Assets._Scripts.Game
         }
 
         private void InitializeData()
-        {           
-            _saveData = new SaveData();
+        {
+            if (_saveData == null)
+                _saveData = new SaveData();
 
             _dataPlayer = _saveData.LoadData<DataPlayer>(_saveData.FilePlayer);
             _dataResource = _saveData.LoadData<DataResource>(_saveData.FileResource);
@@ -112,9 +150,10 @@ namespace Assets._Scripts.Game
 
         private void SpawnSpot(List<PositionSpot> position)
         {
+            _spotContainer = _level.GetComponentInChildren<SpotContainer>();
             for(int i = 0; i < position.Count; i++)
             {
-                var spot = _spotFactory.GetSpot(position[i].Type, position[i].transform.position);
+                var spot = _spotFactory.GetSpot(position[i].Type, position[i].transform.position, _spotContainer);
                 _allSpot.Add(spot);
                 _fixedUpdater.Add(spot);
             }
@@ -122,13 +161,16 @@ namespace Assets._Scripts.Game
 
         private List<PositionSpot> InitializeSpawnSpotPosition()
         {
+            _spawnSpotPosition = _level.GetComponentInChildren<PositionSpawnSpot>();
             _spawnSpotPosition.Initialize();
             return _spawnSpotPosition.Positions;
         }
 
         private void SpawnResource(List<Position> positions)
         {
-            _resourceSourceContainer = GetComponentInChildren<ResourceSourceContainer>();
+            _resourceContainer = _level.GetComponentInChildren<ResourceContainer>();
+            _resourceSourceContainer = _level.GetComponentInChildren<ResourceSourceContainer>();
+
            var resources = _resourceSourceContainer.SpawnResourceSource(positions, _camera, _resourceFactory, _resourceContainer);
             _allResource.AddRange(resources);
             _fixedUpdater.AddRange(resources);
@@ -136,6 +178,7 @@ namespace Assets._Scripts.Game
 
         private List<Position> InitializeSpawnPositionResource()
         {
+            _spawnResourcePositions = _level.GetComponentInChildren<ResourceSpawnPosition>();
             _spawnResourcePositions.Initialize();
             return _spawnResourcePositions.Positions;
         }
@@ -148,6 +191,8 @@ namespace Assets._Scripts.Game
 
         private void CreatePlayer()
         {
+            _playerContainer = _level.GetComponentInChildren<PlayerContainer>();
+
             _player = Instantiate(_playerPrefab);        
             _player.transform.SetParent(_playerContainer.transform);
              _player.transform.localPosition = Vector3.zero;
@@ -188,9 +233,16 @@ namespace Assets._Scripts.Game
             SaveGame();
         }
 
-        public void RestartGame()
+        public void NextLevel()
         {
+            RestartGame();
+            _dataPlayer.Position = Vector3.zero;
+            var level = _dataPlayer.Level;     
+            level++;
+            _dataPlayer.SetLevel(level);
+            SaveGame();
 
+            StartNewGame();
         }
     }
 }

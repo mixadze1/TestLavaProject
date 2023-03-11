@@ -36,11 +36,11 @@ namespace Assets._Scripts.Game
      
         [SerializeField] private SpotConfig _treesToMetal, _metalToCrystal, _crystalToTrees;
 
-        public Spot GetSpot(SpotType type, Vector3 position)
+        public Spot GetSpot(SpotType type, Vector3 position, SpotContainer spotContainer)
         {
             var config = GetConfig(type);
             Spot spot = CreateGameObjectInstance(config.PrefabSpot);
-            spot.Initialize(config, position);
+            spot.Initialize(config, position, spotContainer);
             return spot;
         }
 

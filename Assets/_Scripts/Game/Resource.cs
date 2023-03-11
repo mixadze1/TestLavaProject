@@ -12,7 +12,6 @@ namespace Assets._Scripts.Game
 
         private float _jumpPower = 3f;
         private float _timeJump = 1.5f;
-        private float _timeRotate = 1.7f;
 
         private int _amountJump = 1;
         public ResourceType Type { get; private set; }

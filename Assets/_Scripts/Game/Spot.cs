@@ -43,10 +43,11 @@ namespace Assets._Scripts.Game
         private bool _isDelayGetResource;
         private bool _isCreate;
 
-        public void Initialize(SpotFactory.SpotConfig config, Vector3 position)
+        public void Initialize(SpotFactory.SpotConfig config, Vector3 position, SpotContainer spotContainer)
         {
             this.transform.position = new Vector3(position.x, 1.5f, position.z);
             this.transform.rotation = Quaternion.Euler(0, -90, 0);
+            this.transform.SetParent(spotContainer.transform);
             InitializeParticle(config);
             InitializeTimeDelay(config);
             InitializeAmountCreateAndNeedResources(config);
@@ -91,6 +92,7 @@ namespace Assets._Scripts.Game
         private void InitializeParticle(SpotFactory.SpotConfig config)
         {
             _particle = Instantiate(config.Particle, _positionForParticle.position, _positionForParticle.rotation);
+            _particle.transform.SetParent(this.transform);
         }
 
         private void InitializeRangeNeedResources(SpotFactory.SpotConfig config)
@@ -174,6 +176,7 @@ namespace Assets._Scripts.Game
                 var item = Instantiate(_prefabItem, this.transform.position, Quaternion.identity);
                 item.Initialize(_resourceCreate);
                 var position = _positionForCreate.transform.position;
+                item.transform.SetParent(this.transform);
                 float jumpPower = 3f, timeJump = 1.5f;
                 int amountJump = 1;
                 item.transform.DOJump(new Vector3(position.x + Random.Range(-2, 2f), position.y, position.z + Random.Range(-_rangeCreateResource, _rangeCreateResource)),

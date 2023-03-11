@@ -27,7 +27,7 @@ namespace Assets._Scripts.Game
         private float _timeDamage;
         private float _rangeResource;
 
-        private float _jumpPower;
+        private float _jumpPowerResource;
         private float _timeMoveResource;
 
         private int _countResource;
@@ -43,31 +43,55 @@ namespace Assets._Scripts.Game
 
         public void Initialize(ResourceFactory.ResourceConfig config, Position position, Transform camera, ResourceContainer resourceContainer)
         {
-            SetPosition(position);
             _resourceContainer = resourceContainer;
-           var meshRenderer = GetComponent<MeshRenderer>();
-            _cameraTransform = camera;
-            _material = config.Material;
-            _rangeResource = config.RangeCreateResource;
-            meshRenderer.material = _material;
-            Health = config.Health;
-            _delay = new WaitForSeconds(config.DelayRecovery);
 
+            SetPosition(position);      
+            InitializeColor(config);
+            InitializeCameraTransform(camera);
+            var health = InitializeResourceSourceParametr(config);
+            InitializeParticle(config);
+            InitializeResourceParametr(config);
+            ColorSlider();
+            SLiderView(health);
+        }
 
-            var offset = 1;
-            _particle = Instantiate(config.Particle, new Vector3(this.transform.position.x, this.transform.position.y + offset, this.transform.position.z), Quaternion.identity);
-
-            _jumpPower = config.ResourceJumpPower;
+        private void InitializeResourceParametr(ResourceFactory.ResourceConfig config)
+        {
+            _jumpPowerResource = config.ResourceJumpPower;
             _timeMoveResource = config.ResourceTimeMove;
-
-            MaxHealth = config.Health;
             _countResource = config.AmountCreateResource;
+            _rangeResource = config.RangeCreateResource;
+        }
+
+        private float InitializeResourceSourceParametr(ResourceFactory.ResourceConfig config)
+        {
+            Health = config.Health;
+            MaxHealth = config.Health;
             _recoveryHealthPerFixedUpdate = config.RecoveryHealthPerSecond * Time.fixedDeltaTime;
             _damageScaler = config.ScalerDamage;
             ResourceType = config.Type;
             _timeDamage = config.TimeDamage;
-            ColorSlider();
-            SLiderView(Health);
+            _delay = new WaitForSeconds(config.DelayRecovery);
+            return Health;
+        }
+
+        private void InitializeParticle(ResourceFactory.ResourceConfig config)
+        {
+            var offset = 1;
+            _particle = Instantiate(config.Particle, new Vector3(this.transform.position.x, this.transform.position.y + offset, this.transform.position.z), Quaternion.identity);
+            _particle.transform.SetParent(this.transform);
+        }
+
+        private void InitializeCameraTransform(Transform camera)
+        {
+            _cameraTransform = camera;
+        }
+
+        private void InitializeColor(ResourceFactory.ResourceConfig config)
+        {
+            _material = config.Material;
+            var meshRenderer = GetComponent<MeshRenderer>();
+            meshRenderer.material = _material;
         }
 
         public float GetTimeDamage()
@@ -113,7 +137,6 @@ namespace Assets._Scripts.Game
 
             if(IsRecovery() && Health / MaxHealth < 1)
             {
-               
                 Recovery();
             }
         }
@@ -166,7 +189,8 @@ namespace Assets._Scripts.Game
                 _particle.Play();
                 _isRecovery = false;
                 var calculateDamage = damage * _damageScaler;
-                this.transform.DOScale(0.85f, 0.3f).OnComplete(() => this.transform.DOScale(1f, 0.3f));
+                float reduceCube = 0.85f, timeTween = 0.3f;
+                this.transform.DOScale(reduceCube, timeTween).OnComplete(() => this.transform.DOScale(1f, timeTween));
                 Health -= calculateDamage;
                 SLiderView(Health);
                 GetItem();
@@ -187,8 +211,13 @@ namespace Assets._Scripts.Game
         private void MoveResource(Resource item)
         {
             int amountJump = 1;
-            var direction = new Vector3(this.transform.position.x + Random.Range(-_rangeResource, _rangeResource), this.transform.position.y, this.transform.position.z + Random.Range(-_rangeResource, _rangeResource));
-            item.transform.DOJump(new Vector3(direction.x, 1.15f, direction.z), _jumpPower, amountJump, _timeMoveResource).OnComplete(() => item.BoxColliderEnabled(true));
+            float positionFloorY = 1.15f;
+
+            var direction = new Vector3(this.transform.position.x + Random.Range(-_rangeResource, _rangeResource), this.transform.position.y, 
+                this.transform.position.z + Random.Range(-_rangeResource, _rangeResource));      
+
+            item.transform.DOJump(new Vector3(direction.x, positionFloorY, direction.z), _jumpPowerResource, amountJump, _timeMoveResource).
+                OnComplete(() => item.BoxColliderEnabled(true));
         }
     }
 }
