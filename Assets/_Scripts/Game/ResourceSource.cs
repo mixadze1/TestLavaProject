@@ -8,12 +8,13 @@ namespace Assets._Scripts.Game
 {
     public class ResourceSource : MonoBehaviour, IFixedUpdater
     {
-    
+   
         [SerializeField] private Image[] _imageSlider;
         [SerializeField] private Slider _slider;
         [SerializeField] private Canvas _canvas;
         [SerializeField] private Resource _itemPrefab;
 
+        private ParticleSystem _particle;
 
         private ResourceContainer _resourceContainer;
         private Coroutine _coroutine;
@@ -51,6 +52,10 @@ namespace Assets._Scripts.Game
             meshRenderer.material = _material;
             Health = config.Health;
             _delay = new WaitForSeconds(config.DelayRecovery);
+
+
+            var offset = 1;
+            _particle = Instantiate(config.Particle, new Vector3(this.transform.position.x, this.transform.position.y + offset, this.transform.position.z), Quaternion.identity);
 
             _jumpPower = config.ResourceJumpPower;
             _timeMoveResource = config.ResourceTimeMove;
@@ -108,6 +113,7 @@ namespace Assets._Scripts.Game
 
             if(IsRecovery() && Health / MaxHealth < 1)
             {
+               
                 Recovery();
             }
         }
@@ -155,12 +161,11 @@ namespace Assets._Scripts.Game
 
         public void GetDamage(float damage)
         {
-            Debug.Log(Health);
             if(Health > 0)
             {
+                _particle.Play();
                 _isRecovery = false;
                 var calculateDamage = damage * _damageScaler;
-                Debug.Log("damage");
                 this.transform.DOScale(0.85f, 0.3f).OnComplete(() => this.transform.DOScale(1f, 0.3f));
                 Health -= calculateDamage;
                 SLiderView(Health);

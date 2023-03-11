@@ -7,7 +7,6 @@ Shader "Particles/Alpha Blended Foreground" {
 
         Category{
             Tags { "Queue" = "Transparent+2" "IgnoreProjector" = "True" "RenderType" = "Transparent" "PreviewType" = "Plane" }
-            ZTest Always
             Blend SrcAlpha OneMinusSrcAlpha
             ColorMask RGB
             Cull Off Lighting Off ZWrite Off

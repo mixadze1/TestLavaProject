@@ -25,6 +25,7 @@ MonoBehaviour:
     RecoveryHealthPerSecond: 5
     Type: 1
     Material: {fileID: 2100000, guid: 748eadaa7f93ba64cb28bb4e73fec699, type: 2}
+    Particle: {fileID: 5009401756940374176, guid: e67ac74621fc527469715461dab1e8ee, type: 3}
   _trees:
     PrefabResourceSource: {fileID: 4896076247108990524, guid: e2de70b7625cd0745a776eaaba1f755f, type: 3}
     RangeCreateResource: 2.713
@@ -38,6 +39,7 @@ MonoBehaviour:
     RecoveryHealthPerSecond: 8
     Type: 0
     Material: {fileID: 2100000, guid: bd414eb03ec5aba4da64e513d5609530, type: 2}
+    Particle: {fileID: 19821592, guid: f00b7ce74a405d547ad157c971a52fb9, type: 3}
   _metal:
     PrefabResourceSource: {fileID: 4896076247108990524, guid: e2de70b7625cd0745a776eaaba1f755f, type: 3}
     RangeCreateResource: 1.71
@@ -51,3 +53,4 @@ MonoBehaviour:
     RecoveryHealthPerSecond: 8
     Type: 2
     Material: {fileID: 2100000, guid: cd8e1b33beadb6144b966f7f45518156, type: 2}
+    Particle: {fileID: 19810250, guid: d8375ffafb92bd54da393edded479abb, type: 3}

@@ -34,6 +34,7 @@ namespace Assets._Scripts.Game
           
             public ResourceType Type;
             public Material Material;
+            public ParticleSystem Particle;
         }
 
         [SerializeField]
