@@ -14,9 +14,9 @@ TagManager:
   - Floor
   - Resource
   - Player
-  - 
-  - 
-  - 
+  - Item
+  - Wall
+  - Spot
   - 
   - 
   - 

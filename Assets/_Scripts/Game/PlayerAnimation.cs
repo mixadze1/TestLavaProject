@@ -1,16 +1,12 @@
-using System.Collections;
-using System.Collections.Generic;
+using Assets._Scripts.Interfaces;
 using UnityEngine;
 
 public class PlayerAnimation : MonoBehaviour, IPlayerAnimationHandler
 {
     private const string WALKING = "Movement";
-    private const string IDLE = "Idle";
     private const string MINE = "Mine";
 
     private Animator _animator;
-
-    private bool _isAlreadyWalking;
 
     public void Initialize()
     {
@@ -19,13 +15,12 @@ public class PlayerAnimation : MonoBehaviour, IPlayerAnimationHandler
 
     public void SetWalking(bool value)
     {
-        Debug.Log("Movement");
         _animator.SetBool(WALKING, value);
     }
 
     
-    public void SetMine()
+    public void SetMine(bool value)
     {
-        _animator.SetTrigger(MINE);
+        _animator.SetBool(MINE, value);
     }
 }

@@ -1,13 +1,15 @@
 using UnityEngine;
 using UnityEngine.UI;
 using System;
+using Assets._Scripts.Interfaces;
 
 namespace Assets._Scripts.Game
 {
-    public class Joystick : MonoBehaviour
+    public class Joystick : MonoBehaviour, IJoystickHandler // default joystick asset.
     {
         [SerializeField] private GameObject touchMarker;
         [SerializeField] private float joystickRadiusInPixels = 150f;
+
         private GraphicRaycaster graphicRaycaster;
         private Image touchMarkerRenderer;
         private Image joystickRenderer;
@@ -127,6 +129,11 @@ namespace Assets._Scripts.Game
         public void PauseWithInteractableJoystick()
         {
             _isPause = false;
+        }
+
+        public bool IsJoystickEnable()
+        {
+            return IsActiveJoystick;
         }
     }
 }

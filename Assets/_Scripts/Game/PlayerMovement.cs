@@ -1,28 +1,38 @@
-﻿using UnityEngine;
+﻿using Assets._Scripts.Interfaces;
+using UnityEngine;
 using UnityEngine.AI;
 
 namespace Assets._Scripts.Game
 {
-    public class PlayerMovement : MonoBehaviour
+    public class PlayerMovement : MonoBehaviour, IFixedUpdater, IMovementHandler
     {
+        [SerializeField, Range(1, 10f)] private float _speed;
         private NavMeshAgent _agent;
-        private Joystick _joystick;
+        private IJoystickHandler _joystickHandler;
         private IPlayerAnimationHandler _animationHandler;
-        private float _speed;
 
-        public void Initialize(Joystick joystick, float speed, IPlayerAnimationHandler animationHandler)
+
+        public void Initialize(IJoystickHandler joystickHandler, IPlayerAnimationHandler animationHandler)
         {
             _animationHandler = animationHandler;
-            _joystick = joystick;
+            _joystickHandler = joystickHandler;
             _agent = GetComponent<NavMeshAgent>();
-            CalculateSpeed(speed);
+            CalculateSpeed(_speed);
         }
 
         public void FixedUpdater()
         {
-           var movementVector = GetJoystickInfo();
+            var movementVector = GetJoystickInfo();
             Move(movementVector);
             RotationPlayer(movementVector);
+        }
+
+        public bool IsMovement()
+        {
+            if (_joystickHandler.IsJoystickEnable())
+                return false;
+
+            return true;
         }
 
         private void CalculateSpeed(float speed)
@@ -33,12 +43,10 @@ namespace Assets._Scripts.Game
 
         private Vector3 GetJoystickInfo()
         {
-            if (_joystick.IsActiveJoystick)
-            {
-                
-                return _joystick.GetHorizontalInput();
+            if (_joystickHandler.IsJoystickEnable())
+            {             
+                return _joystickHandler.GetHorizontalInput();
             }
-           
             return Vector3.zero;
         }
 

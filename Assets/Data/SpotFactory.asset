@@ -1,0 +1,50 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 621ca976cfa60b64bb38e074d02951ec, type: 3}
+  m_Name: SpotFactory
+  m_EditorClassIdentifier: 
+  _treesToMetal:
+    PrefabSpot: {fileID: 8963336790547801115, guid: e80e9d687f7cb4b4dbda96d58e0eff41, type: 3}
+    TimeCreateResource: 6.2
+    TimeDelayGiveResource: 0.45
+    ResourceNeed: 5
+    ResourceCreate: 5
+    RandomRangeNeedResource: 0.072
+    RandomRangeCreateResource: 2
+    TypeResourceNeed: 0
+    TypeResourceCreate: 2
+    MaterialFrom: {fileID: 2100000, guid: bd414eb03ec5aba4da64e513d5609530, type: 2}
+    MaterialTo: {fileID: 2100000, guid: cd8e1b33beadb6144b966f7f45518156, type: 2}
+  _metalToCrystal:
+    PrefabSpot: {fileID: 8963336790547801115, guid: e80e9d687f7cb4b4dbda96d58e0eff41, type: 3}
+    TimeCreateResource: 5.76
+    TimeDelayGiveResource: 0.45
+    ResourceNeed: 3
+    ResourceCreate: 6
+    RandomRangeNeedResource: 0.072
+    RandomRangeCreateResource: 2
+    TypeResourceNeed: 2
+    TypeResourceCreate: 1
+    MaterialFrom: {fileID: 2100000, guid: cd8e1b33beadb6144b966f7f45518156, type: 2}
+    MaterialTo: {fileID: 2100000, guid: 748eadaa7f93ba64cb28bb4e73fec699, type: 2}
+  _crystalToTrees:
+    PrefabSpot: {fileID: 8963336790547801115, guid: e80e9d687f7cb4b4dbda96d58e0eff41, type: 3}
+    TimeCreateResource: 3.31
+    TimeDelayGiveResource: 0.45
+    ResourceNeed: 6
+    ResourceCreate: 7
+    RandomRangeNeedResource: 0.072
+    RandomRangeCreateResource: 1.57
+    TypeResourceNeed: 1
+    TypeResourceCreate: 0
+    MaterialFrom: {fileID: 2100000, guid: 748eadaa7f93ba64cb28bb4e73fec699, type: 2}
+    MaterialTo: {fileID: 2100000, guid: bd414eb03ec5aba4da64e513d5609530, type: 2}
