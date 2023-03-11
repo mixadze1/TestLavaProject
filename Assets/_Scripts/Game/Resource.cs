@@ -20,7 +20,7 @@ namespace Assets._Scripts.Game
         public void Initialize(ResourceType type)
         {
             Type = type;
-            GetMaterial();
+            InitializeMaterial();
         }
 
         public void GiveItem(IPlayerHandler playerHandler)
@@ -28,17 +28,19 @@ namespace Assets._Scripts.Game
             _boxCollider.enabled = false;
             this.transform.SetParent(playerHandler.GetTransform());
             Debug.Log(playerHandler.GetTransform());
-            this.transform.DOLocalJump(playerHandler.GetPositionForItem().localPosition, _jumpPower, _amountJump, _timeJump);
-            this.transform.DORotate(Vector3.zero, _timeRotate).OnComplete(() =>
-            { 
+            this.transform.rotation = Quaternion.identity;
+            this.transform.DOLocalJump(playerHandler.GetPositionForItem().localPosition, _jumpPower, _amountJump, _timeJump).OnComplete(() =>
+            {
                 Destroy(this.gameObject);
             });
         }
 
+        public Color GetColor() => _meshRenderer.material.color;
+
         public BoxCollider GetBoxCollider() => _boxCollider;    
         public MeshRenderer GetMeshRenderer() => _meshRenderer;
 
-        private void GetMaterial()
+        private void InitializeMaterial()
         {
             switch (Type)
             {

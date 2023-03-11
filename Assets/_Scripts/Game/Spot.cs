@@ -7,6 +7,7 @@ namespace Assets._Scripts.Game
 {
     public class Spot : MonoBehaviour, IFixedUpdater
     {
+        [SerializeField] private ParticleSystem _particle;
         [SerializeField] private Transform _positionForGet;
         [SerializeField] private Transform _positionForCreate;
 
@@ -193,12 +194,13 @@ namespace Assets._Scripts.Game
             {
                 _fixedTimeForCreate += Time.fixedDeltaTime;
                 _spotView.UpdateViewSlider(_timeCreateResource, _fixedTimeForCreate);
-
+                _meshColorToResource[1].transform.localScale = Vector3.one * 0.5f * (_fixedTimeForCreate / _timeCreateResource);
                 if (_fixedTimeForCreate > _timeCreateResource)
                 {
                     _fixedTimeForCreate = 0;
                     _isCreate = false;
                     _amountResourceNeed = _safeAmountResourceNeed;
+                    _particle.Play();
                     CreateResource();
                 }
             }

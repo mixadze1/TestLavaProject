@@ -1,4 +1,5 @@
 using Assets._Scripts.Interfaces;
+using DG.Tweening;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
@@ -17,7 +18,10 @@ namespace Assets._Scripts.Game
 
         private IPlayerHandler _playerHandler;
 
-        private Dictionary<ResourceType, int> Resources;
+        private Tweener _tweener;
+
+        private Dictionary<ResourceType, int> _resources;
+        private Dictionary<ResourceType, TextMeshProUGUI> _resourcesView;
 
         private DataResource _dataResource;
 
@@ -27,10 +31,20 @@ namespace Assets._Scripts.Game
 
         public void Initialize(IPlayerHandler playerHandler, ResourceView resourceView)
         {
+            InitializeView(resourceView);
+        
+            _playerHandler = playerHandler;   
+        }
+
+        private void InitializeView(ResourceView resourceView)
+        {
             _textTrees = resourceView.TextTrees;
             _textCrystal = resourceView.TextCrystal;
-            _textMetal = resourceView.TextMetal;   
-            _playerHandler = playerHandler;   
+            _textMetal = resourceView.TextMetal;
+            _resourcesView = new Dictionary<ResourceType, TextMeshProUGUI>();
+            _resourcesView.Add(ResourceType.Trees, _textTrees);
+            _resourcesView.Add(ResourceType.Crystal, _textCrystal);
+            _resourcesView.Add(ResourceType.Metal, _textMetal);
         }
 
         public bool IsTouch() => _isTouchResource;
@@ -38,11 +52,13 @@ namespace Assets._Scripts.Game
         public void GetSaves(DataPlayer data, DataResource dataResource)
         {
             _dataResource = dataResource;
-            Resources = new Dictionary<ResourceType, int>();
-            Debug.Log(Resources);
+            _resources = new Dictionary<ResourceType, int>();
+            Debug.Log(_resources);
            
             GetSafeResource();
-            UpdateView();
+            UpdateView(ResourceType.Trees, true);
+            UpdateView(ResourceType.Metal, true);
+            UpdateView(ResourceType.Crystal, true);
         }
 
         public void FixedUpdater()
@@ -52,29 +68,30 @@ namespace Assets._Scripts.Game
 
         public int AmountResource(ResourceType type)
         {
-            return Resources[type];
+            return _resources[type];
         }
 
-        public void AddResource(Resource item)
+        public void AddResource(Resource resource)
         {
+            resource.GetBoxCollider().enabled = false;
             _isTouchResource = true;
             Debug.Log(_playerHandler);
-            item.GiveItem(_playerHandler);
-            int count = Resources[item.Type];
+            resource.GiveItem(_playerHandler);
+            int count = _resources[resource.Type];
             count++;
-            Resources[item.Type] = count;
-            UpdateView();
-            _dataResource.SetResource(item.Type, count);
+            _resources[resource.Type] = count;
+            UpdateView(resource.Type);
+            _dataResource.SetResource(resource.Type, count);
         }
 
         public void RemoveResource(ResourceType type, int amountWant)
         {           
-            int count = Resources[type];
+            int count = _resources[type];
             if (count >= amountWant)
             {
                 count-= amountWant;
-                Resources[type] = count;
-                UpdateView();
+                _resources[type] = count;
+                UpdateView(type);
                 _dataResource.SetResource(type, count);
             }
             else
@@ -85,9 +102,9 @@ namespace Assets._Scripts.Game
 
         private void GetSafeResource()
         {
-            Resources.Add(ResourceType.Trees, _dataResource.Trees);
-            Resources.Add(ResourceType.Metal, _dataResource.Metal);
-            Resources.Add(ResourceType.Crystal, _dataResource.Crystal);
+            _resources.Add(ResourceType.Trees, _dataResource.Trees);
+            _resources.Add(ResourceType.Metal, _dataResource.Metal);
+            _resources.Add(ResourceType.Crystal, _dataResource.Crystal);
         }
 
         private void CheckItemInRange()
@@ -105,11 +122,26 @@ namespace Assets._Scripts.Game
             }
         }
 
-        private void UpdateView()
-        {
-            _textCrystal.text =Resources[ResourceType.Crystal] + ":CRYSTAL";
-            _textTrees.text =  Resources[ResourceType.Trees] + ":TREES";
-            _textMetal.text = Resources[ResourceType.Metal] + ":METAL";
+        private void UpdateView(ResourceType type, bool isStart = false)
+        {     
+            if (_resources[type] == 0)
+            {
+                _resourcesView[type].gameObject.SetActive(false);
+                return;
+            }     
+
+            if (!_resourcesView[type].gameObject.activeSelf)
+                _resourcesView[type].gameObject.SetActive(true);
+
+            _resourcesView[type].text = _resources[type].ToString();
+            if(!isStart)
+            {
+                if (_tweener != null)
+                    _tweener.Kill();
+                   
+                _tweener = _resourcesView[type].transform.DOScale(1.5f, 0.15f).OnComplete(() => _resourcesView[type].transform.DOScale(1, 0.15f));
+            }
+         
         }
 
         private void OnDrawGizmosSelected()

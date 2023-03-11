@@ -160,6 +160,7 @@ namespace Assets._Scripts.Game
             {
                 _isRecovery = false;
                 var calculateDamage = damage * _damageScaler;
+                Debug.Log("damage");
                 this.transform.DOScale(0.85f, 0.3f).OnComplete(() => this.transform.DOScale(1f, 0.3f));
                 Health -= calculateDamage;
                 SLiderView(Health);
