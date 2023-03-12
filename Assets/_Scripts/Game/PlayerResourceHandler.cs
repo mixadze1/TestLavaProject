@@ -25,7 +25,7 @@ namespace Assets._Scripts.Game
 
         private DataResource _dataResource;
 
-        private float _offset = 0.5f;
+        private float _offset = 0.35f;
 
         private bool _isTouchResource;
 
@@ -143,7 +143,7 @@ namespace Assets._Scripts.Game
 
         private void OnDrawGizmosSelected()
         {
-            Gizmos.color = new Color(1, 1, 1, 0.5f); 
+            Gizmos.color = new Color(0, 1, 0, 0.25f); 
             var position = transform.position;
             Vector3 newPosition = new Vector3(position.x, position.y + _offset, position.z);
             Gizmos.DrawSphere(newPosition, _rangeItem);

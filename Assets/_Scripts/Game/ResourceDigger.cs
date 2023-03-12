@@ -39,23 +39,27 @@ public class ResourceDigger : MonoBehaviour, IFixedUpdater
     {
         if (CheckResourceInRange() && _playerMovementHandler.IsMovement() &&  _resource.GetHealth() > 0)
         {
-
             _resource.EnableView();
             _animationHandler.SetMine(true);
             _fixedTime += Time.fixedDeltaTime;
             if (_fixedTime >= _timeDamage)
             {
-                Debug.Log("Digger");
                 _isTouch = true;
                 Digger();
                 _fixedTime = 0;
-            }           
+            }
         }
-        if(!CheckResourceInRange() || _resource.GetHealth() <= 0)
-        {
-            _resource?.RecoveryEnable();
-            _resource = null; 
+
+        if (_resource?.GetHealth() <= 0 || !CheckResourceInRange())
             _animationHandler.SetMine(false);
+
+        if (!CheckResourceInRange() && _resource != null)
+        {     
+            if (!_resource.IsDelayRecovery() && _resource.GetHealth() < _resource.MaxHealth && !_resource.IsRecovery())
+            {
+                Debug.Log("Recovery");
+                _resource?.RecoveryEnable();
+            }
         }
     }
 
@@ -66,7 +70,7 @@ public class ResourceDigger : MonoBehaviour, IFixedUpdater
 
         var offset = 0.5f;
         Ray rayBackward = new Ray(new Vector3(position.x, position.y + offset, position.z), transform.forward);
-        Debug.DrawRay(new Vector3(position.x, position.y + offset, position.z), transform.forward * _range);
+        Debug.DrawRay(new Vector3(position.x, position.y + offset, position.z), transform.forward * _range, Color.red);
 
         if (Physics.Raycast(rayBackward, out hitCollider, _range, _layerMask))
         {

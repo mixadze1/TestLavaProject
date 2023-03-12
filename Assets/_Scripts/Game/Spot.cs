@@ -20,6 +20,11 @@ namespace Assets._Scripts.Game
 
         private ParticleSystem _particle;
 
+        private SpotView _spotView;
+
+        private ResourceType _resourceNeed;
+        private ResourceType _resourceCreate;
+
         private float _rangeNeedResource;
 
         private float _rangeCreateResource;
@@ -27,18 +32,13 @@ namespace Assets._Scripts.Game
         private float _timeCreateResource;
         private float _timeDelayGiveResource;
 
+        private float _fixedTimeForCreate;
+        private float _fixedTimeForDelay;
+
         private int _amountResourceNeed;
         private int _amountResourceCreate;
 
         private int _safeAmountResourceNeed;
-
-        private float _fixedTimeForCreate;
-        private float _fixedTimeForDelay;
-
-        private SpotView _spotView;
-
-        private ResourceType _resourceNeed;
-        private ResourceType _resourceCreate;
 
         private bool _isDelayGetResource;
         private bool _isCreate;
@@ -104,7 +104,7 @@ namespace Assets._Scripts.Game
         {
             _rangeCreateResource = config.RandomRangeCreateResource;
         }
-
+            
         private void InitializeTypeResources(SpotFactory.SpotConfig config)
         {
             _resourceNeed = config.TypeResourceNeed;
@@ -206,7 +206,8 @@ namespace Assets._Scripts.Game
             {
                 _fixedTimeForCreate += Time.fixedDeltaTime;
                 _spotView.UpdateViewSlider(_timeCreateResource, _fixedTimeForCreate);
-                _meshColorToResource[1].transform.localScale = Vector3.one * 0.5f * (_fixedTimeForCreate / _timeCreateResource);
+                float reduceScale = 0.5f;
+                _meshColorToResource[1].transform.localScale = Vector3.one * reduceScale * (_fixedTimeForCreate / _timeCreateResource);
                 if (_fixedTimeForCreate > _timeCreateResource)
                 {
                     _fixedTimeForCreate = 0;

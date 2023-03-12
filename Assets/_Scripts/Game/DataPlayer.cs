@@ -11,25 +11,13 @@ namespace Assets._Scripts.Game
 
         public int Level;
 
-        public void SetPositionAndRotation(Vector3 position)
-        {
-            Position = position;
-        }
+        public void SetPositionAndRotation(Vector3 position) => Position = position;
 
-        public void SetLevel(int level)
-        {
-            Level = level;
-        }
+        public void SetLevel(int level) => Level = level;
 
-        public void FirstPartTutorialComplete()
-        {
-            IsTutorialPartComplete = true;
-        }
+        public void FirstPartTutorialComplete() => IsTutorialPartComplete = true;
 
-        public void TutorialComplete()
-        {
-            IsTutorialComplete = true;
-        }
+        public void TutorialComplete() => IsTutorialComplete = true;
 
     }
 }

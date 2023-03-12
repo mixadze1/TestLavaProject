@@ -646,7 +646,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fdfb84379ca276546b4e509057f9ee47, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _range: 2.05
+  _range: 1.6
   _layerMask:
     serializedVersion: 2
     m_Bits: 128
@@ -663,9 +663,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5e8295ccfa6ebac4dbb4cd89051834a3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _textTrees: {fileID: 0}
-  _textCrystal: {fileID: 0}
-  _textMetal: {fileID: 0}
   _rangeItem: 1
   _layerMask:
     serializedVersion: 2
@@ -1279,7 +1276,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2998005487618193373}
   m_Layer: 0
-  m_Name: Arrow
+  m_Name: ArrowForTutorial
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

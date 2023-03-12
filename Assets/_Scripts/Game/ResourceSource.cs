@@ -21,6 +21,9 @@ namespace Assets._Scripts.Game
 
         private Material _material;
 
+        private float _delayRecovery;
+        private float _fixedTimeForRecovery;
+
         private float _recoveryHealthPerFixedUpdate;
         private float _damageScaler;
         private float _timeDamage;
@@ -32,8 +35,8 @@ namespace Assets._Scripts.Game
         private int _countResource;
 
         private bool _isRecovery;
-
-        private WaitForSeconds _delay;
+        private bool _isDelayRecovery;
+   
 
         public float Health { get; private set; }
         public float MaxHealth { get; private set; }
@@ -70,7 +73,7 @@ namespace Assets._Scripts.Game
             _damageScaler = config.ScalerDamage;
             ResourceType = config.Type;
             _timeDamage = config.TimeDamage;
-            _delay = new WaitForSeconds(config.DelayRecovery);
+            _delayRecovery = config.DelayRecovery;
             return Health;
         }
 
@@ -111,18 +114,17 @@ namespace Assets._Scripts.Game
 
         public void RecoveryEnable()
         {
-            if (_coroutine != null)
-                StopCoroutine(_coroutine);
-           _coroutine = StartCoroutine(DelayRecovery());
+            _isDelayRecovery = true;
         }
 
-        private IEnumerator DelayRecovery()
+        public bool IsDelayRecovery()
         {
-            yield return _delay;
-            _isRecovery = true;
+            if (_isDelayRecovery)
+                return true;
+            return false;
         }
 
-        private bool IsRecovery()
+    public bool IsRecovery()
         {
             if(_isRecovery)
                 return true;
@@ -131,12 +133,33 @@ namespace Assets._Scripts.Game
 
         public void FixedUpdater()
         {
-            var transform = _cameraTransform;
-            _canvas.transform.LookAt(transform);
+            if (IsDelayRecovery())
+            {
+                DelayRecovery();
+            }
 
-            if(IsRecovery() && Health / MaxHealth < 1)
+            if (IsRecovery() && Health / MaxHealth < 1)
             {
                 Recovery();
+            }
+
+            CanvasLookAtCamera();
+        }
+
+        private void CanvasLookAtCamera()
+        {
+            var transform = _cameraTransform;
+            _canvas.transform.LookAt(transform);
+        }
+
+        private void DelayRecovery()
+        {
+            _fixedTimeForRecovery += Time.fixedDeltaTime;
+            if (_fixedTimeForRecovery > _delayRecovery)
+            {
+                _fixedTimeForRecovery = 0;
+                _isDelayRecovery = false;
+                _isRecovery = true;
             }
         }
 
@@ -185,8 +208,8 @@ namespace Assets._Scripts.Game
         {
             if(Health > 0)
             {
+                DisableRecovery();
                 _particle.Play();
-                _isRecovery = false;
                 var calculateDamage = damage * _damageScaler;
                 float reduceCube = 0.85f, timeTween = 0.3f;
                 this.transform.DOScale(reduceCube, timeTween).OnComplete(() => this.transform.DOScale(1f, timeTween));
@@ -194,6 +217,12 @@ namespace Assets._Scripts.Game
                 SLiderView(Health);
                 GetItem();
             }
+        }
+
+        private void DisableRecovery()
+        {
+            _isRecovery = false;
+            _isDelayRecovery = false;
         }
 
         private void GetItem()

@@ -3,6 +3,7 @@ using UnityEngine;
 using Cinemachine;
 using Assets._Scripts.Interfaces;
 using UnityEngine.AI;
+using Assets._Scripts.Game.Containers;
 
 namespace Assets._Scripts.Game
 {
@@ -55,8 +56,11 @@ namespace Assets._Scripts.Game
         }
 
         private void Update()
-        { 
-            foreach(var updater in _updates)
+        {
+            if (_isPause)
+                return;
+
+            foreach (var updater in _updates)
             {
                 updater.Updater();
             }
@@ -75,9 +79,10 @@ namespace Assets._Scripts.Game
 
         private void StartNewGame()
         {
-            InitializeData();
+            InitializeSafeData();
             InitializeSavesHandler();
             InitializeCountLevel();
+            InitializeJoystick();
             CreateLevel();
             BuildNavMesh();
             CreatePlayer();
@@ -96,6 +101,11 @@ namespace Assets._Scripts.Game
             _fixedUpdater.Clear();
             _allResource.Clear();
             _allSpot.Clear();
+        }
+
+        private void InitializeJoystick()
+        {
+            _updates.Add(_joystick);
         }
 
         private void BuildNavMesh()
@@ -132,19 +142,29 @@ namespace Assets._Scripts.Game
             }         
         }
 
-        private void InitializeData()
+        private void InitializeSafeData()
         {
             if (_saveData == null)
                 _saveData = new SaveData();
 
-            _dataPlayer = _saveData.LoadData<DataPlayer>(_saveData.FilePlayer);
-            _dataResource = _saveData.LoadData<DataResource>(_saveData.FileResource);
+            InitializeSaveDataPlayer();
+            InitializeSaveDataResource();
 
             if (_dataPlayer == null)
                 _dataPlayer = new DataPlayer();
 
             if (_dataResource == null)
                 _dataResource = new DataResource();
+        }
+
+        private void InitializeSaveDataPlayer()
+        {
+            _dataPlayer = _saveData.LoadData<DataPlayer>(_saveData.FilePlayer);
+        }
+
+        private void InitializeSaveDataResource()
+        {
+            _dataResource = _saveData.LoadData<DataResource>(_saveData.FileResource);
         }
 
         private void SpawnSpot(List<PositionSpot> position)
@@ -191,12 +211,7 @@ namespace Assets._Scripts.Game
         private void CreatePlayer()
         {
             _playerContainer = _level.GetComponentInChildren<PlayerContainer>();
-
-            _player = Instantiate(_playerPrefab);  
-            _player.transform.SetParent(_playerContainer.transform);
-             _player.transform.localPosition = Vector3.zero;
-            _player.Initialize(joystickHandler:_joystick, _dataPlayer, _dataResource, _resourceView);
-
+            _player = _playerContainer.SpawnPlayer(_playerPrefab, _joystick, _dataPlayer, _dataResource, _resourceView);
             _fixedUpdater.Add(_player);
             _updates.Add(_player);
         }

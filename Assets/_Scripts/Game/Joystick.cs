@@ -5,7 +5,7 @@ using Assets._Scripts.Interfaces;
 
 namespace Assets._Scripts.Game
 {
-    public class Joystick : MonoBehaviour, IJoystickHandler // default joystick asset.
+    public class Joystick : MonoBehaviour, IJoystickHandler, IUpdater // default joystick asset.
     {
         [SerializeField] private GameObject touchMarker;
         [SerializeField] private float joystickRadiusInPixels = 150f;
@@ -33,7 +33,7 @@ namespace Assets._Scripts.Game
             HideJoystick();
         }
 
-        private void Update()
+        public void Updater()
         {
             if (_isPause)
             {
