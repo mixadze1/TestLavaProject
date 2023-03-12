@@ -44,6 +44,8 @@ public class ResourceDigger : MonoBehaviour, IFixedUpdater
             _fixedTime += Time.fixedDeltaTime;
             if (_fixedTime >= _timeDamage)
             {
+                Debug.Log("Digger");
+
                 _isTouch = true;
                 Digger();
                 _fixedTime = 0;

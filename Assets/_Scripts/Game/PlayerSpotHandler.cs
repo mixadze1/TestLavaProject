@@ -45,8 +45,12 @@ namespace Assets._Scripts.Game
         {
             var amountGive = 1;
            var completeOperation = _spot.GetNeedResource(type, this.transform.position, amountGive);
-            if(completeOperation)
+            if (completeOperation)
+            {
+                Debug.Log("GiveResource " + type); 
                 _resourceHandler.RemoveResource(type, amountGive);
+            }
+     
         }
 
         private bool CheckSpotUnderPlayer()

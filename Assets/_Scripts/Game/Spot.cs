@@ -22,8 +22,8 @@ namespace Assets._Scripts.Game
 
         private SpotView _spotView;
 
-        private ResourceType _resourceNeed;
-        private ResourceType _resourceCreate;
+        private ResourceType _resourceNeedType;
+        private ResourceType _resourceCreateType;
 
         private float _rangeNeedResource;
 
@@ -61,7 +61,7 @@ namespace Assets._Scripts.Game
 
         public ResourceType TypeResource()
         {
-            return _resourceNeed;
+            return _resourceNeedType;
         }
 
         public Resource GetItemPrefab() => _prefabItem;
@@ -107,8 +107,8 @@ namespace Assets._Scripts.Game
             
         private void InitializeTypeResources(SpotFactory.SpotConfig config)
         {
-            _resourceNeed = config.TypeResourceNeed;
-            _resourceCreate = config.TypeResourceCreate;
+            _resourceNeedType = config.TypeResourceNeed;
+            _resourceCreateType = config.TypeResourceCreate;
         }
 
         private void InitializeTimeDelay(SpotFactory.SpotConfig config)
@@ -171,15 +171,18 @@ namespace Assets._Scripts.Game
 
         private void CreateResource()
         {
+            Debug.Log("CreateResource " + _resourceCreateType + ", amount = " + _amountResourceCreate);
+
             for (int i = 0; i < _amountResourceCreate; i++)
             {
                 var item = Instantiate(_prefabItem, this.transform.position, Quaternion.identity);
-                item.Initialize(_resourceCreate);
+                item.Initialize(_resourceCreateType);
                 var position = _positionForCreate.transform.position;
                 item.transform.SetParent(this.transform);
                 float jumpPower = 3f, timeJump = 1.5f;
                 int amountJump = 1;
-                item.transform.DOJump(new Vector3(position.x + Random.Range(-2, 2f), position.y, position.z + Random.Range(-_rangeCreateResource, _rangeCreateResource)),
+                item.transform.DOJump(new Vector3(position.x + Random.Range(-_rangeCreateResource, _rangeCreateResource),
+                    position.y, position.z + Random.Range(-_rangeCreateResource, _rangeCreateResource)),
                     jumpPower, amountJump, timeJump).OnComplete(() =>
                     {
                         UpdateView();
