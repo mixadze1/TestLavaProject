@@ -1,5 +1,8 @@
 using UnityEngine;
 
-public class SpotContainer : MonoBehaviour
+namespace Assets._Scripts.Game.Containers
 {
+    public class SpotContainer : MonoBehaviour
+    {
+    }
 }

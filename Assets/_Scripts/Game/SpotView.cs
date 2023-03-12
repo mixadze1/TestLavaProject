@@ -6,12 +6,12 @@ public class SpotView : MonoBehaviour
 {
     [SerializeField] private TextMeshProUGUI _textCubeLeft;
     [SerializeField] private TextMeshProUGUI _textCubeRight;
-    [SerializeField] private Image _image;
-
     [SerializeField] private TextMeshProUGUI _textFloor;
-    [SerializeField] private Slider _slider;
+
+    [SerializeField] private Image _image;
     [SerializeField] private Image _sliderFill;
 
+    [SerializeField] private Slider _slider;
 
     public void Initialize(Material materialFrom)
     {

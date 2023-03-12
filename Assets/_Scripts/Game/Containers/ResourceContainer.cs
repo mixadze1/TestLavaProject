@@ -1,5 +1,8 @@
 using UnityEngine;
 
-public class ResourceContainer : MonoBehaviour
+namespace Assets._Scripts.Game.Containers
 {
+    public class ResourceContainer : MonoBehaviour
+    {
+    }
 }

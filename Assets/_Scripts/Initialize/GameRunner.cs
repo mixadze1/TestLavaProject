@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -18,7 +16,6 @@ namespace Assets._Scripts.Initialize
             await BootstraperServices();
             LoadGame();
         }
-
 
         private async Task BootstraperServices()
         {

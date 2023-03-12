@@ -9,7 +9,5 @@ namespace Assets._Scripts.Interfaces
         void RemoveResource(ResourceType type, int amountWant);
 
         int AmountResource(ResourceType type);
-
-
     }
 }

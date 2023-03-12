@@ -1,3 +1,4 @@
+using Assets._Scripts.Game.Containers;
 using Assets._Scripts.Interfaces;
 using DG.Tweening;
 using System.Collections;
@@ -16,7 +17,7 @@ namespace Assets._Scripts.Game
         private ParticleSystem _particle;
 
         private ResourceContainer _resourceContainer;
-        private Coroutine _coroutine;
+
         private Transform _cameraTransform;
 
         private Material _material;
@@ -36,7 +37,6 @@ namespace Assets._Scripts.Game
 
         private bool _isRecovery;
         private bool _isDelayRecovery;
-   
 
         public float Health { get; private set; }
         public float MaxHealth { get; private set; }

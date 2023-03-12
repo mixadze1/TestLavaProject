@@ -1,3 +1,4 @@
+using Assets._Scripts.Game.Containers;
 using Assets._Scripts.Interfaces;
 using DG.Tweening;
 using System.Collections.Generic;
@@ -8,7 +9,6 @@ namespace Assets._Scripts.Game
     public class Spot : MonoBehaviour, IFixedUpdater
     {
         [SerializeField] private Transform _positionForParticle;
-     
         [SerializeField] private Transform _positionForGet;
         [SerializeField] private Transform _positionForCreate;
 

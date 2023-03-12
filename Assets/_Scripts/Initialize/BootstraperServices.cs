@@ -1,7 +1,5 @@
-﻿using Assets._Scripts.Game;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
-using UnityEngine.SceneManagement;
 
 namespace Assets._Scripts.Initialize
 {

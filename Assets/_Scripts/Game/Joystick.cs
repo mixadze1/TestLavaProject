@@ -10,7 +10,6 @@ namespace Assets._Scripts.Game
         [SerializeField] private GameObject touchMarker;
         [SerializeField] private float joystickRadiusInPixels = 150f;
 
-        private GraphicRaycaster graphicRaycaster;
         private Image touchMarkerRenderer;
         private Image joystickRenderer;
         private Vector3 touchOffset;
@@ -26,7 +25,6 @@ namespace Assets._Scripts.Game
 
         private void Awake()
         {
-            graphicRaycaster = GetComponent<GraphicRaycaster>();
             touchMarkerRenderer = touchMarker.GetComponent<Image>();
             joystickRenderer = gameObject.GetComponent<Image>();
             touchMarker.transform.position = transform.position;
