@@ -19,7 +19,7 @@ MonoBehaviour:
     TimeDamage: 1.93
     AmountCreateResource: 4
     DelayRecovery: 1.99
-    ResourceJumpPower: 3.21
+    ResourceJumpPower: 2.33
     ResourceTimeMove: 2.24
     Health: 100
     RecoveryHealthPerSecond: 5
@@ -31,7 +31,7 @@ MonoBehaviour:
     RangeCreateResource: 2.713
     ScalerDamage: 1
     TimeDamage: 0.22
-    AmountCreateResource: 8
+    AmountCreateResource: 4
     DelayRecovery: 0.1
     ResourceJumpPower: 4.5
     ResourceTimeMove: 2.57
@@ -45,7 +45,7 @@ MonoBehaviour:
     RangeCreateResource: 1.71
     ScalerDamage: 1
     TimeDamage: 0.69
-    AmountCreateResource: 14
+    AmountCreateResource: 7
     DelayRecovery: 0.71
     ResourceJumpPower: 2.26
     ResourceTimeMove: 1.52
