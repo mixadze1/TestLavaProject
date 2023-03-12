@@ -19,7 +19,6 @@ namespace Assets._Scripts.Game
         [SerializeField] private Player _playerPrefab;  
         [SerializeField] private ResourceView _resourceView;
 
-        private Tutorial _tutorial;
         private PlayerContainer _playerContainer;
         private SpotContainer _spotContainer;
         private ResourceContainer _resourceContainer;
@@ -28,9 +27,11 @@ namespace Assets._Scripts.Game
         private ResourceSpawnPosition _spawnResourcePositions;
         private PositionSpawnSpot _spawnSpotPosition;
 
+        private Tutorial _tutorial;
         private Level _level;
         private SavesHandler _savesHandler;
         private Player _player;
+
         private DataPlayer _dataPlayer;
         private DataResource _dataResource;
 
@@ -40,7 +41,6 @@ namespace Assets._Scripts.Game
         private List<IFixedUpdater> _fixedUpdater = new List<IFixedUpdater>();
 
         private List<ResourceSource> _allResource = new List<ResourceSource>();
-
         private List<Spot> _allSpot = new List<Spot>();
 
         private bool _isPause;

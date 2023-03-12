@@ -7,6 +7,6 @@ public class LevelView : MonoBehaviour
 
     public void Initialize(int level)
     {
-        _levelView.text = "Level " + (level+1); // in collection first element is 0.
+        _levelView.text = "Level " + (level + 1); // in collection first element is 0.
     }
 }

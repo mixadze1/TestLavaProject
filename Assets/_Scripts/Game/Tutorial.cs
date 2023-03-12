@@ -28,9 +28,25 @@ namespace Assets._Scripts.Game
 
         public void FixedUpdater()
         {
+            if(_arrow == null) //if we are delete player, arrow == null
+                return;            
+
+            if(this == null)
+            {
+                Debug.Log("Don't delete Tutorial. You can remove tutorial in scene Game, GameObject -> Game ->  in editor disable tick \"IsEnableTutorial\"");
+                if (_arrow.gameObject.activeSelf)
+                    _arrow.gameObject.SetActive(false);
+                return;
+            }
+            TutorialLogic();
+        }
+
+        private void TutorialLogic()
+        {
+
             if (_firstState && _secondState)
             {
-                if(_arrow.gameObject.activeSelf)
+                if (_arrow.gameObject.activeSelf)
                     _arrow.gameObject.SetActive(false);
                 return;
             }

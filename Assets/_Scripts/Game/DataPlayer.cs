@@ -18,6 +18,5 @@ namespace Assets._Scripts.Game
         public void FirstPartTutorialComplete() => IsTutorialPartComplete = true;
 
         public void TutorialComplete() => IsTutorialComplete = true;
-
     }
 }

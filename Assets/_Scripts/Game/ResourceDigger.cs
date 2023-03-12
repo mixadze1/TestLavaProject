@@ -12,7 +12,7 @@ public class ResourceDigger : MonoBehaviour, IFixedUpdater
     private IMovementHandler _playerMovementHandler;
     private IPlayerAnimationHandler _animationHandler;
 
-    private ResourceSource _resource;
+    private IResourceSourceHandler _resourceHadnler;
 
     private float _fixedTime;
     private float _timeDamage;
@@ -32,14 +32,14 @@ public class ResourceDigger : MonoBehaviour, IFixedUpdater
 
     private void Digger()
     {
-        _resource.GetDamage(_damage);
+        _resourceHadnler.GetDamage(_damage);
     }
 
     public void FixedUpdater()
     {
-        if (CheckResourceInRange() && _playerMovementHandler.IsMovement() &&  _resource.GetHealth() > 0)
+        if (CheckResourceInRange() && _playerMovementHandler.IsMovement() &&  _resourceHadnler.GetHealth() > 0)
         {
-            _resource.EnableView();
+            _resourceHadnler.EnableView();
             _animationHandler.SetMine(true);
             _fixedTime += Time.fixedDeltaTime;
             if (_fixedTime >= _timeDamage)
@@ -52,15 +52,15 @@ public class ResourceDigger : MonoBehaviour, IFixedUpdater
             }
         }
 
-        if (_resource?.GetHealth() <= 0 || !CheckResourceInRange())
+        if (_resourceHadnler?.GetHealth() <= 0 || !CheckResourceInRange())
             _animationHandler.SetMine(false);
 
-        if (!CheckResourceInRange() && _resource != null)
+        if (!CheckResourceInRange() && _resourceHadnler != null)
         {     
-            if (!_resource.IsDelayRecovery() && _resource.GetHealth() < _resource.MaxHealth && !_resource.IsRecovery())
+            if (!_resourceHadnler.IsDelayRecovery() && _resourceHadnler.GetHealth() < _resourceHadnler.GetMaxHealth() && !_resourceHadnler.IsRecovery())
             {
                 Debug.Log("Recovery");
-                _resource?.RecoveryEnable();
+                _resourceHadnler?.RecoveryEnable();
             }
         }
     }
@@ -76,8 +76,8 @@ public class ResourceDigger : MonoBehaviour, IFixedUpdater
 
         if (Physics.Raycast(rayBackward, out hitCollider, _range, _layerMask))
         {
-            _resource = hitCollider.transform.GetComponent<ResourceSource>();
-            _timeDamage = _resource.GetTimeDamage();
+            _resourceHadnler = hitCollider.transform.GetComponent<IResourceSourceHandler>();
+            _timeDamage = _resourceHadnler.GetTimeDamage();
             return true;
         }
         return false;

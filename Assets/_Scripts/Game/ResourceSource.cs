@@ -7,7 +7,7 @@ using UnityEngine.UI;
 
 namespace Assets._Scripts.Game
 {
-    public class ResourceSource : MonoBehaviour, IFixedUpdater
+    public class ResourceSource : MonoBehaviour, IFixedUpdater, IResourceSourceHandler
     {
         [SerializeField] private Image[] _imageSlider;
         [SerializeField] private Slider _slider;
@@ -57,6 +57,56 @@ namespace Assets._Scripts.Game
             SLiderView(health);
         }
 
+        public float GetTimeDamage()
+        {
+            return _timeDamage;
+        }
+
+        public void EnableView()
+        {
+            if (!_slider.gameObject.activeSelf)
+                _slider.gameObject.SetActive(true);
+        }
+
+        public void DisableView()
+        {
+            _slider.gameObject.SetActive(false);
+        }
+
+        public void RecoveryEnable()
+        {
+            _isDelayRecovery = true;
+        }
+
+        public bool IsDelayRecovery()
+        {
+            if (_isDelayRecovery)
+                return true;
+            return false;
+        }
+
+        public bool IsRecovery()
+        {
+            if (_isRecovery)
+                return true;
+            return false;
+        }
+
+        public void FixedUpdater()
+        {
+            if (IsDelayRecovery())
+            {
+                DelayRecovery();
+            }
+
+            if (IsRecovery() && Health / MaxHealth < 1)
+            {
+                Recovery();
+            }
+
+            CanvasLookAtCamera();
+        }
+
         private void InitializeResourceParametr(ResourceFactory.ResourceConfig config)
         {
             _jumpPowerResource = config.ResourceJumpPower;
@@ -96,60 +146,11 @@ namespace Assets._Scripts.Game
             meshRenderer.material = _material;
         }
 
-        public float GetTimeDamage()
-        {
-            return _timeDamage;
-        }
-
-        public void EnableView()
-        {
-            if(!_slider.gameObject.activeSelf)
-                _slider.gameObject.SetActive(true);
-        }
-
-        public void DisableView()
-        {
-            _slider.gameObject.SetActive(false);
-        }
-
-        public void RecoveryEnable()
-        {
-            _isDelayRecovery = true;
-        }
-
-        public bool IsDelayRecovery()
-        {
-            if (_isDelayRecovery)
-                return true;
-            return false;
-        }
-
-    public bool IsRecovery()
-        {
-            if(_isRecovery)
-                return true;
-            return false;
-        }
-
-        public void FixedUpdater()
-        {
-            if (IsDelayRecovery())
-            {
-                DelayRecovery();
-            }
-
-            if (IsRecovery() && Health / MaxHealth < 1)
-            {
-                Recovery();
-            }
-
-            CanvasLookAtCamera();
-        }
-
         private void CanvasLookAtCamera()
         {
             var transform = _cameraTransform;
-            _canvas.transform.LookAt(transform);
+            if(_canvas != null)
+                _canvas.transform.LookAt(transform);
         }
 
         private void DelayRecovery()
@@ -202,6 +203,11 @@ namespace Assets._Scripts.Game
         public float GetHealth()
         {
             return Health;
+        }
+
+        public float GetMaxHealth()
+        {
+            return MaxHealth;
         }
 
         public void GetDamage(float damage)

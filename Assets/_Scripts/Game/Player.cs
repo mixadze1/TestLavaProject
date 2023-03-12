@@ -16,13 +16,13 @@ namespace Assets._Scripts.Game
         [SerializeField] private Transform _arrow;
         [SerializeField] private Transform _positionForItem;
 
-        private DataPlayer _data;
-        private DataResource _resource;
+        private DataPlayer _dataPlayer;
+        private DataResource _dataResource;
         private PlayerResourceHandler _resourceHandler;
         private PlayerSpotHandler _spotHandler;
         private ResourceView _resourceView;
-        private IMovementHandler _movementHandler;
 
+        private IMovementHandler _movementHandler;
         private IPlayerAnimationHandler _playerAnimationHandler;
 
         private List<IFixedUpdater> _fixedUpdaters = new List<IFixedUpdater>();
@@ -33,8 +33,8 @@ namespace Assets._Scripts.Game
         public void Initialize(IJoystickHandler joystickHandler, DataPlayer safeData, DataResource dataResource,  ResourceView resourceView)
         {
             _resourceView = resourceView;
-            _resource = dataResource;
-            _data = safeData;
+            _dataResource = dataResource;
+            _dataPlayer = safeData;
             _transform = this.transform;
 
             InitializePlayerAnimation();
@@ -47,18 +47,23 @@ namespace Assets._Scripts.Game
 
         private void InitializeSafesDependencyPlayer()
         {
-            Debug.Log(_data);
-            this.transform.localPosition = _data.Position;
+            this.transform.localPosition = _dataPlayer.Position;
 
             foreach (var saves in _haveSaves)
             {
-                saves.GetSaves(_data, _resource);
+                saves.GetSaves(_dataPlayer, _dataResource);
             }
         }
 
         public void FixedUpdater()
         {
-            _data.SetPositionAndRotation(this.transform.localPosition);
+            if (this == null)
+            {
+                Debug.Log("Why are you delete player?");
+                return;
+            }
+
+            _dataPlayer.SetPositionAndRotation(this.transform.localPosition);
 
             foreach (var fixedUpdater in _fixedUpdaters)
                 fixedUpdater.FixedUpdater();
